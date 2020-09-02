@@ -1,0 +1,15 @@
+{{ if eq (lower .Values.scheduler.type) "deployment" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: topolvm-scheduler
+  labels:
+  {{- include "topolvm.labels" . | nindent 4 }}
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: topolvm-scheduler
+  ports:
+    - protocol: TCP
+      port: {{ .Values.scheduler.options.listen.port }}
+{{ end }}

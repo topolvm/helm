@@ -1,0 +1,56 @@
+{{ if eq (lower .Values.scheduler.type) "deployment" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: topolvm-scheduler
+  labels:
+  {{- include "topolvm.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.scheduler.deployment.replicaCount }}
+  strategy:
+{{ toYaml .Values.scheduler.updateStrategy | indent 4 }}
+  minReadySeconds: {{ .Values.scheduler.minReadySeconds }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: topolvm-scheduler
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: topolvm-scheduler
+    spec:
+      securityContext:
+{{ toYaml .Values.securityContext | indent 8 }}
+      serviceAccountName: topolvm-scheduler
+      terminationGracePeriodSeconds: {{ .Values.scheduler.terminationGracePeriodSeconds }}
+      containers:
+        - name: topolvm-scheduler
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command:
+            - /topolvm-scheduler
+            - --config=/etc/topolvm/scheduler-options.yaml
+          livenessProbe:
+            httpGet:
+              port: {{ .Values.scheduler.options.listen.port }}
+              path: /status
+          volumeMounts:
+            - mountPath: /etc/topolvm
+              name: scheduler-options
+          resources:
+{{ toYaml .Values.scheduler.resources | indent 12 }}
+      volumes:
+        - name: scheduler-options
+          configMap:
+            name: scheduler-options
+      {{- with .Values.scheduler.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+      {{- end }}
+      {{- with .Values.scheduler.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+      {{- end }}
+      {{- if .Values.controller.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.scheduler.nodeSelector | indent 8 }}
+      {{- end }}
+{{ end }}
