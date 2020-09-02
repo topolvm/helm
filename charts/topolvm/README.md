@@ -4,7 +4,7 @@
 
 ## Pre Requisites
 * Kubernetes 1.15+
-* lvmd installed on the underlying nodes
+* `lvmd` installed on the underlying nodes, ref: https://github.com/topolvm/topolvm/blob/master/docs/lvmd.md
 * Requires at least `v3.2.3` version of helm to support
 * Namespace named `topolvm-system`:
 
