@@ -3,7 +3,7 @@
 apiVersion: cert-manager.io/v1alpha3
 kind: Issuer
 metadata:
-  name: webhook-selfsign
+  name: {{ template "topolvm.fullname" . }}-webhook-selfsign
   labels:
   {{- include "topolvm.labels" . | nindent 4 }}
 spec:
@@ -15,9 +15,9 @@ spec:
 apiVersion: cert-manager.io/v1alpha3
 kind: Issuer
 metadata:
-  name: webhook-ca
+  name: {{ template "topolvm.fullname" . }}-webhook-ca
   labels:
   {{- include "topolvm.labels" . | nindent 4 }}
 spec:
   ca:
-    secretName: webhook-ca
+    secretName: {{ template "topolvm.fullname" . }}-webhook-ca

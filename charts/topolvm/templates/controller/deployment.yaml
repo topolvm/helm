@@ -102,7 +102,7 @@ spec:
           emptyDir: {}
         - name: certs
           secret:
-            secretName: mutatingwebhook
+            secretName: {{ template "topolvm.fullname" . }}-mutatingwebhook
      {{- with .Values.controller.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}

@@ -3,7 +3,7 @@ kind: MutatingWebhookConfiguration
 metadata:
   name: {{ template "topolvm.fullname" . }}-hook
   annotations:
-    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/mutatingwebhook
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ template "topolvm.fullname" . }}-mutatingwebhook
   labels:
   {{- include "topolvm.labels" . | nindent 4 }}
     app.kubernetes.io/name: {{ template "topolvm.fullname" . }}-hook

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: scheduler-options
+  name: {{ template "topolvm.fullname" . }}-scheduler-options
   labels:
   {{- include "topolvm.labels" . | nindent 4 }}
 data:

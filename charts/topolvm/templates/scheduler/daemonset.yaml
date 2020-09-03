@@ -34,7 +34,7 @@ spec:
               path: /status
           volumeMounts:
             - mountPath: /etc/topolvm
-              name: scheduler-options
+              name: {{ template "topolvm.fullname" . }}-scheduler-options
           resources:
 {{ toYaml .Values.scheduler.resources | indent 12 }}
       hostNetwork: true
@@ -51,7 +51,7 @@ spec:
 {{ toYaml .Values.scheduler.nodeSelector | indent 8 }}
       {{- end }}
       volumes:
-        - name: scheduler-options
+        - name: {{ template "topolvm.fullname" . }}-scheduler-options
           configMap:
-            name: scheduler-options
+            name: {{ template "topolvm.fullname" . }}-scheduler-options
 {{ end }}
