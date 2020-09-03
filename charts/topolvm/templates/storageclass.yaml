@@ -1,21 +1,30 @@
-{{ if .Values.storageclass.create }}
-kind: StorageClass
+{{- $release := .Release }}
+{{- $chart := .Chart }}
+{{- range $val := .Values.storageClasses }}
+{{- if $val.storageClass }}
+---
 apiVersion: storage.k8s.io/v1
+kind: StorageClass
 metadata:
-  name: {{ .Values.storageclass.name }}
+  name: {{ $val.name }}
   annotations:
-    storageclass.kubernetes.io/is-default-class: {{ .Values.storageclass.defaultclass | quote }}
-    {{- with .Values.storageclass.annotations }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
+  {{- if $val.storageClass.isDefaultClass }}
+    storageclass.kubernetes.io/is-default-class: "true"
+  {{- end }}
+  {{- with $val.storageClass.annotations }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
-  {{- include "topolvm.labels" . | nindent 4 }}
+    app.kubernetes.io/managed-by: {{ $release.Service | quote }}
+    app.kubernetes.io/instance: {{ $release.Name | quote }}
+    helm.sh/chart: {{ replace "+" "_" $chart.Version | printf "%s-%s" $chart.Name }}
 provisioner: topolvm.cybozu.com
 parameters:
-  "csi.storage.k8s.io/fstype": {{ .Values.storageclass.fstype | quote }}
-  {{- with .Values.storageclass.additionalParameters }}
+  "csi.storage.k8s.io/fstype": {{ $val.storageClass.fsType | quote }}
+  {{- with $val.storageClass.additionalParameters }}
   {{- toYaml . | nindent 2 }}
   {{- end }}
-volumeBindingMode: {{ .Values.storageclass.volumeBindingMode }}
-allowVolumeExpansion: {{ .Values.storageclass.allowVolumeExpansion }}
-{{ end }}
+volumeBindingMode: {{ $val.storageClass.volumeBindingMode | quote }}
+allowVolumeExpansion: {{ $val.storageClass.allowVolumeExpansion }}
+{{- end }}
+{{- end }}
