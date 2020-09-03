@@ -64,16 +64,28 @@ scheduler:
     limits:
       memory: "200Mi"
       cpu: "200m"
+
+  # OPTIONAL: tune the node scoring
+  # Ref: https://github.com/topolvm/topolvm/blob/master/deploy/README.md
+  schedulerOptions: {}
+#    default-divisor: 1
+#    divisors:
+#      ssd: 1
+#      hdd: 10
   options:
     listen:
       host: localhost
       port: 9251
 
 
+
 # CSI node service
 node:
+  # Container Security Context
+  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   securityContext:
     privileged: true
+
   metrics:
     enabled: true
     annotations:
@@ -149,6 +161,9 @@ storageclass:
   allowVolumeExpansion: true
   # volumeBindingMode can be either WaitForFirstConsumer or Immediate. WaitForFirstConsumer is recommended because TopoLVM cannot schedule pods wisely if volumeBindingMode is Immediate.
   volumeBindingMode: WaitForFirstConsumer
+  additionalParameters: {}
+#    "topolvm.cybozu.com/device-class": "ssd"
+
 
 
 # Container Security Context

@@ -7,4 +7,8 @@ metadata:
 data:
   scheduler-options.yaml: |-
     listen: "{{ .Values.scheduler.options.listen.host }}:{{ .Values.scheduler.options.listen.port }}"
+    {{ if .Values.scheduler.schedulerOptions }}
+    {{ toYaml .Values.scheduler.schedulerOptions | indent 4 }}
+    {{ else }}
     default-divisor: 1
+    {{ end }}

@@ -9,7 +9,7 @@
 * Requires at least `v3.2.3` version of helm to support
 * Namespace named `topolvm-system`:
 
-    ```sh
+    ```
     kubectl apply -f charts/topolvm/namespace.yaml
     ```
 
