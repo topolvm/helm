@@ -57,13 +57,13 @@ scheduler:
 
   ## Define resources requests and limits for single Pods.
   ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
-  resources:
-    requests:
-      memory: "50Mi"
-      cpu: "50m"
-    limits:
-      memory: "200Mi"
-      cpu: "200m"
+  resources: {}
+#    requests:
+#      memory: "50Mi"
+#      cpu: "50m"
+#    limits:
+#      memory: "200Mi"
+#      cpu: "200m"
 
   # OPTIONAL: tune the node scoring
   # Ref: https://github.com/topolvm/topolvm/blob/master/deploy/README.md
@@ -100,13 +100,13 @@ controller:
   terminationGracePeriodSeconds: 10
   ## Define resources requests and limits for single Pods.
   ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
-  resources:
-    requests:
-      memory: "50Mi"
-      cpu: "50m"
-    limits:
-      memory: "200Mi"
-      cpu: "200m"
+  resources: {}
+#    requests:
+#      memory: "50Mi"
+#      cpu: "50m"
+#    limits:
+#      memory: "200Mi"
+#      cpu: "200m"
 
   # The update strategy to apply to the Deployment
   ##
@@ -122,16 +122,16 @@ controller:
   ## Affinity and anti-affinity
   ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
   ##
-  affinity:
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - controller
-          topologyKey: "kubernetes.io/hostname"
+  affinity: {}
+#    podAntiAffinity:
+#      requiredDuringSchedulingIgnoredDuringExecution:
+#        - labelSelector:
+#            matchExpressions:
+#              - key: app.kubernetes.io/name
+#                operator: In
+#                values:
+#                  - topolvm-controller
+#          topologyKey: "kubernetes.io/hostname"
 
   ## Node tolerations for server scheduling to nodes with taints
   ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
@@ -181,4 +181,4 @@ podSecurityPolicy:
 
 crd:
   # Weather to create CRD
-  create: true
+  create: false
