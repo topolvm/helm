@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: topolvm-scheduler
+  name: {{ template "topolvm.fullname" . }}-scheduler
   labels:
   {{- include "topolvm.labels" . | nindent 4 }}
 spec:
@@ -11,15 +11,15 @@ spec:
   minReadySeconds: {{ .Values.scheduler.minReadySeconds }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: topolvm-scheduler
+      app.kubernetes.io/name: {{ template "topolvm.fullname" . }}-scheduler
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: topolvm-scheduler
+        app.kubernetes.io/name: {{ template "topolvm.fullname" . }}-scheduler
     spec:
       securityContext:
 {{ toYaml .Values.securityContext | indent 8 }}
-      serviceAccountName: topolvm-scheduler
+      serviceAccountName: {{ template "topolvm.fullname" . }}-scheduler
       terminationGracePeriodSeconds: {{ .Values.scheduler.terminationGracePeriodSeconds }}
       containers:
         - name: topolvm-scheduler

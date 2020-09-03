@@ -7,7 +7,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     namespace: {{ .Release.Namespace }}
-    name: controller
+    name: {{ template "topolvm.fullname" . }}-controller
 roleRef:
   kind: Role
   name: leader-election
@@ -22,7 +22,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     namespace: {{ .Release.Namespace }}
-    name: controller
+    name: {{ template "topolvm.fullname" . }}-controller
 roleRef:
   kind: Role
   name: external-provisioner-cfg
@@ -38,7 +38,7 @@ metadata:
   {{- include "topolvm.labels" . | nindent 4 }}
 subjects:
   - kind: ServiceAccount
-    name: controller
+    name: {{ template "topolvm.fullname" . }}-controller
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role
@@ -55,7 +55,7 @@ metadata:
   {{- include "topolvm.labels" . | nindent 4 }}
 subjects:
   - kind: ServiceAccount
-    name: controller
+    name: {{ template "topolvm.fullname" . }}-controller
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role

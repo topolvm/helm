@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: node
+  name: {{ template "topolvm.fullname" . }}-node
   labels:
   {{- include "topolvm.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: node
+      app.kubernetes.io/name: {{ template "topolvm.fullname" . }}-node
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: node
+        app.kubernetes.io/name: {{ template "topolvm.fullname" . }}-node
       annotations:
-        {{ if .Values.node.metrics.annotations }}
+        {{ if and .Values.node.metrics.enabled .Values.node.metrics.annotations }}
         {{ toYaml .Values.node.metrics.annotations | indent 8 }}
         {{ end }}
     spec:
-      serviceAccountName: node
+      serviceAccountName: {{ template "topolvm.fullname" . }}-node
       containers:
         - name: topolvm-node
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           securityContext:
-            privileged: true
+            {{- toYaml .Values.node.securityContext | nindent 12 }}
           command:
             - /topolvm-node
             - --lvmd-socket=/run/lvmd/lvmd.sock

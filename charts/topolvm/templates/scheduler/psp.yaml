@@ -2,7 +2,7 @@
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: topolvm-scheduler
+  name: {{ template "topolvm.fullname" . }}-scheduler
   labels:
   {{- include "topolvm.labels" . | nindent 4 }}
 spec:

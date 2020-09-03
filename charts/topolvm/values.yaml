@@ -70,13 +70,14 @@ scheduler:
       port: 9251
 
 
-
 # CSI node service
 node:
+  securityContext:
+    privileged: true
   metrics:
+    enabled: true
     annotations:
       prometheus.io/port: "8080"
-
 
 
 # CSI controller service
@@ -132,7 +133,6 @@ controller:
 
 
 
-
 # Whether to create storageclass
 # ref: https://kubernetes.io/docs/concepts/storage/storage-classes/
 storageclass:
@@ -151,7 +151,6 @@ storageclass:
   volumeBindingMode: WaitForFirstConsumer
 
 
-
 # Container Security Context
 # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 securityContext:
@@ -159,12 +158,10 @@ securityContext:
   runAsGroup: 10000
 
 
-
 # Enable pod security policy
 # ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/
 podSecurityPolicy:
   create: true
-
 
 
 crd:

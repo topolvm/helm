@@ -6,7 +6,7 @@ metadata:
   {{- include "topolvm.labels" . | nindent 4 }}
 subjects:
   - kind: ServiceAccount
-    name: node
+    name: {{ template "topolvm.fullname" . }}-node
     namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io

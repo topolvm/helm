@@ -32,9 +32,9 @@ spec:
   issuerRef:
     name: webhook-ca
   dnsNames:
-    - controller
-    - controller.{{ .Release.Namespace }}
-    - controller.{{ .Release.Namespace }}.svc
+    - {{ template "topolvm.fullname" . }}-controller
+    - {{ template "topolvm.fullname" . }}-controller.{{ .Release.Namespace }}
+    - {{ template "topolvm.fullname" . }}-controller.{{ .Release.Namespace }}.svc
   usages:
     - digital signature
     - key encipherment

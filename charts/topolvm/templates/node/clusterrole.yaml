@@ -17,4 +17,4 @@ rules:
   - apiGroups: ["policy"]
     resources: ["podsecuritypolicies"]
     verbs: ["use"]
-    resourceNames: ["topolvm-node"]
+    resourceNames: ["{{ template "topolvm.fullname" . }}-node"]

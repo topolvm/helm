@@ -5,12 +5,13 @@
 ## Pre Requisites
 * Kubernetes 1.15+
 * `lvmd` installed on the underlying nodes, ref: https://github.com/topolvm/topolvm/blob/master/docs/lvmd.md
+* `cert-manager` installed. ref: https://cert-manager.io/
 * Requires at least `v3.2.3` version of helm to support
 * Namespace named `topolvm-system`:
 
-```sh
-kubectl apply -f charts/topolvm/namespace.yaml
-```
+    ```sh
+    kubectl apply -f charts/topolvm/namespace.yaml
+    ```
 
 ### Installing the Chart
 To install the chart with the release name `topolvm` using a dedicated namespace(recommended):
