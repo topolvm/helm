@@ -1,5 +1,4 @@
 # TopoLVM Helm Chart
-# Work IN progress
 ----------------------------------------
 
 ## Pre Requisites
