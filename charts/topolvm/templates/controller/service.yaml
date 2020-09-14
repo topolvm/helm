@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "topolvm.fullname" . }}-controller
+  labels:
+  {{- include "topolvm.labels" . | nindent 4 }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ template "topolvm.fullname" . }}-controller
+  ports:
+    - protocol: TCP
+      port: 443
+      targetPort: 8443
+

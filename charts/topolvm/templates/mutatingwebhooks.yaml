@@ -1,0 +1,44 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ template "topolvm.fullname" . }}-hook
+  annotations:
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ template "topolvm.fullname" . }}-mutatingwebhook
+  labels:
+  {{- include "topolvm.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ template "topolvm.fullname" . }}-hook
+webhooks:
+  - name: pod-hook.topolvm.cybozu.com
+    namespaceSelector:
+      matchExpressions:
+      - key: topolvm.cybozu.com/webhook
+        operator: NotIn
+        values: ["ignore"]
+    failurePolicy: Fail
+    clientConfig:
+      service:
+        namespace: {{ .Release.Namespace }}
+        name: {{ template "topolvm.fullname" . }}-controller
+        path: /pod/mutate
+    rules:
+      - operations: ["CREATE"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+  - name: pvc-hook.topolvm.cybozu.com
+    namespaceSelector:
+      matchExpressions:
+      - key: topolvm.cybozu.com/webhook
+        operator: NotIn
+        values: ["ignore"]
+    failurePolicy: Fail
+    clientConfig:
+      service:
+        namespace: {{ .Release.Namespace }}
+        name: {{ template "topolvm.fullname" . }}-controller
+        path: /pvc/mutate
+    rules:
+      - operations: ["CREATE"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["persistentvolumeclaims"]

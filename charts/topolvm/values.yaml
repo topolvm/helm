@@ -1,0 +1,182 @@
+image:
+  repository: quay.io/topolvm/topolvm
+  tag: 0.5.3
+  pullPolicy: IfNotPresent
+
+
+# A scheduler extender for TopoLVM
+scheduler:
+  # If you run with a managed control plane (such as GKE, AKS, etc), topolvm-scheduler should be deployed as Deployment and Service
+  # topolvm-scheduler should otherwise be deployed as DaemonSet in unmanaged (i.e. bare metal) deployments
+  # possible values:  daemonset/deployment
+  type: daemonset
+  # Use only if you choose `scheduler.type` deployment
+  deployment:
+    replicaCount: 2
+
+  # The update strategy to apply to the Deployment or DaemonSet
+  ##
+  updateStrategy: {}
+  #  rollingUpdate:
+  #    maxUnavailable: 1
+  #  type: RollingUpdate
+
+  # minReadySeconds
+  ##
+  minReadySeconds: 0
+
+  ## Affinity and anti-affinity
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+  ##
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: Exists
+
+  ## Node tolerations for server scheduling to nodes with taints
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  ##
+  tolerations:
+    - key: CriticalAddonsOnly
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+
+
+  ## Node labels for default backend pod assignment
+  ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
+  ##
+  nodeSelector: {}
+
+  ## terminationGracePeriodSeconds
+  ##
+  terminationGracePeriodSeconds: 10
+
+  ## Define resources requests and limits for single Pods.
+  ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+  resources: {}
+  #    requests:
+  #      memory: "50Mi"
+  #      cpu: "50m"
+  #    limits:
+  #      memory: "200Mi"
+  #      cpu: "200m"
+
+  # OPTIONAL: tune the node scoring
+  # Ref: https://github.com/topolvm/topolvm/blob/master/deploy/README.md
+  schedulerOptions: {}
+  #    default-divisor: 1
+  #    divisors:
+  #      ssd: 1
+  #      hdd: 10
+  options:
+    listen:
+      host: localhost
+      port: 9251
+
+
+
+# CSI node service
+node:
+  # Container Security Context
+  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  securityContext:
+    privileged: true
+
+  metrics:
+    enabled: true
+    annotations:
+      prometheus.io/port: "8080"
+
+
+# CSI controller service
+controller:
+  replicaCount: 2
+  ## terminationGracePeriodSeconds
+  ##
+  terminationGracePeriodSeconds: 10
+  ## Define resources requests and limits for single Pods.
+  ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+  resources: {}
+  #    requests:
+  #      memory: "50Mi"
+  #      cpu: "50m"
+  #    limits:
+  #      memory: "200Mi"
+  #      cpu: "200m"
+
+  # The update strategy to apply to the Deployment
+  ##
+  updateStrategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+
+  # minReadySeconds
+  ##
+  minReadySeconds: 0
+
+  ## Affinity and anti-affinity
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+  ##
+  affinity: {}
+  #    podAntiAffinity:
+  #      requiredDuringSchedulingIgnoredDuringExecution:
+  #        - labelSelector:
+  #            matchExpressions:
+  #              - key: app.kubernetes.io/name
+  #                operator: In
+  #                values:
+  #                  - topolvm-controller
+  #          topologyKey: "kubernetes.io/hostname"
+
+  ## Node tolerations for server scheduling to nodes with taints
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  ##
+  tolerations: []
+
+  ## Node labels for controller pod assignment
+  ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
+  ##
+  nodeSelector: {}
+
+
+# Whether to create storageclass(s)
+# ref: https://kubernetes.io/docs/concepts/storage/storage-classes/
+storageClasses:
+  - name: topolvm-provisioner # Defines name of storage classe.
+    storageClass:
+      # Supported filesystems are: ext4, xfs, and btrfs.
+      fsType: xfs
+      # Additional annotations
+      annotations: {}
+      # Default storage class for dynamic volume provisioning
+      # ref: https://kubernetes.io/docs/concepts/storage/dynamic-provisioning
+      isDefaultClass: true
+      # volumeBindingMode can be either WaitForFirstConsumer or Immediate. WaitForFirstConsumer is recommended because TopoLVM cannot schedule pods wisely if volumeBindingMode is Immediate.
+      volumeBindingMode: WaitForFirstConsumer
+      # enables CSI drivers to expand volumes. This feature is available for Kubernetes 1.16 and later releases.
+      allowVolumeExpansion: true
+      additionalParameters: {}
+      #    "topolvm.cybozu.com/device-class": "ssd"
+
+
+# Container Security Context
+# ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+securityContext:
+  runAsUser:  10000
+  runAsGroup: 10000
+
+
+# Enable pod security policy
+# ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/
+podSecurityPolicy:
+  create: true
+
+
+crd:
+  # Weather to create CRD
+  create: false
