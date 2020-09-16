@@ -38,6 +38,8 @@ spec:
             initialDelaySeconds: 10
             timeoutSeconds: 3
             periodSeconds: 60
+          resources:
+            {{- toYaml .Values.node.resources | nindent 12 }}
           env:
             - name: NODE_NAME
               valueFrom:
