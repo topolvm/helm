@@ -103,3 +103,11 @@ spec:
           hostPath:
             path: /run/topolvm
             type: Directory
+    {{- if .Values.node.tolerations }}
+      tolerations:
+{{ toYaml .Values.node.tolerations | indent 8 }}
+    {{- end }}
+    {{- if .Values.node.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.node.nodeSelector | indent 8 }}
+    {{- end }}
