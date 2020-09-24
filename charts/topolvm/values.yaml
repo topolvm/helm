@@ -37,7 +37,7 @@ scheduler:
                 operator: Exists
 
   ## Node tolerations for server scheduling to nodes with taints
-  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  ## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
   ##
   tolerations:
     - key: CriticalAddonsOnly
@@ -47,7 +47,7 @@ scheduler:
 
 
   ## Node labels for default backend pod assignment
-  ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
   ##
   nodeSelector: {}
 
@@ -101,6 +101,16 @@ node:
 #      memory: 500Mi
 #      cpu: 500m
 
+  ## Node tolerations for server scheduling to nodes with taints
+  ## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+  ##
+  tolerations: []
+
+  ## Node labels for node pod assignment
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  ##
+  nodeSelector: {}
+
 # CSI controller service
 controller:
   replicaCount: 2
@@ -143,12 +153,12 @@ controller:
   #          topologyKey: "kubernetes.io/hostname"
 
   ## Node tolerations for server scheduling to nodes with taints
-  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+  ## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
   ##
   tolerations: []
 
   ## Node labels for controller pod assignment
-  ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
   ##
   nodeSelector: {}
 
