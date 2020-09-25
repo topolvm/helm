@@ -2,7 +2,7 @@
 ----------------------------------------
 
 ## Pre Requisites
-* Kubernetes 1.15+
+* Kubernetes 1.16+
 * `lvmd` installed on the underlying nodes, ref: https://github.com/topolvm/topolvm/blob/master/docs/lvmd.md
 * `cert-manager` installed. ref: https://cert-manager.io/
 * Requires at least `v3.2.3` version of helm to support

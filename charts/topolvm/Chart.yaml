@@ -1,8 +1,8 @@
 apiVersion: v1
-appVersion: 0.5.3
+appVersion: 0.6.0
 description: Topolvm
 name: topolvm
-version: 0.0.4
+version: 1.0.0
 home: https://github.com/topolvm/topolvm
 sources:
   - https://github.com/topolvm/helm/tree/master/charts/topolvm
