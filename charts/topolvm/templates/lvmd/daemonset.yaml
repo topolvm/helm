@@ -1,0 +1,64 @@
+{{- if .Values.lvmd.managed }}
+{{ $global := . }}
+{{- $lvmds := concat ( list .Values.lvmd ) .Values.lvmd.additionalConfigs }}
+{{- range $lvmdidx, $lvmd := $lvmds }}
+{{- with $global }}
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ template "topolvm.fullname" . }}-lvmd{{ $lvmdidx }}
+  labels:
+    idx: {{ $lvmdidx | quote}}
+  {{- include "topolvm.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      idx: {{ $lvmdidx | quote}}
+      app.kubernetes.io/name: {{ template "topolvm.fullname" . }}-lvmd{{ $lvmdidx }}
+  template:
+    metadata:
+      labels:
+        idx: {{ $lvmdidx | quote}}
+        app.kubernetes.io/name: {{ template "topolvm.fullname" . }}-lvmd{{ $lvmdidx }}
+      annotations:
+        {{ if and .Values.node.metrics.enabled .Values.node.metrics.annotations }}
+        {{ toYaml .Values.node.metrics.annotations | indent 8 }}
+        {{ end }}
+    spec:
+      serviceAccountName: {{ template "topolvm.fullname" . }}-lvmd
+      hostPID: true
+      containers:
+        - name: lvmd
+          image: "{{ .Values.lvmd.image.repository | default .Values.image.repository }}:{{ .Values.lvmd.image.tag | default .Values.image.tag }}"
+          securityContext:
+            privileged: true
+          command:
+            - /lvmd
+            - --container
+          resources:
+            {{- toYaml .Values.lvmd.resources | nindent 12 }}
+          volumeMounts:
+            - name: lvmd-socket-dir
+              mountPath: /run/topolvm
+            - name: config
+              mountPath: /etc/topolvm
+      volumes:
+        - name: config
+          configMap:
+            name: {{ template "topolvm.fullname" . }}-lvmd{{ $lvmdidx }}
+        - name: lvmd-socket-dir
+          hostPath:
+            path: /run/topolvm
+            type: DirectoryOrCreate
+    {{- if $lvmd.tolerations }}
+      tolerations:
+{{ toYaml $lvmd.tolerations | indent 8 }}
+    {{- end }}
+    {{- if $lvmd.nodeSelector }}
+      nodeSelector:
+{{ toYaml $lvmd.nodeSelector | indent 8 }}
+    {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

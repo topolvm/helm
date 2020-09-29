@@ -37,3 +37,9 @@ Alternatively a YAML file that specifies the values for the parameters can be pr
 helm upgrade -i topolvm -f values.yaml charts/topolvm
 ```
 
+---
+
+Dont forget to:
+kubectl label namespace kube-system topolvm.cybozu.com/webhook=ignore
+install the kube-scheduler plugin as described in the "Configure kube-scheduler" section of /deploy/README.md
+Config is automatically copied to the masters at /etc/topolvm/scheduler when deployed as a daemonset and kubeScheduler.managed=true
