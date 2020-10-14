@@ -3,6 +3,19 @@ entries:
   topolvm:
   - apiVersion: v1
     appVersion: 0.6.0
+    created: "2020-10-14T19:39:43.856292486Z"
+    description: Topolvm
+    digest: 6c3f185e4e6e19e6b4904e9e38ca720986ad08ed96f313d9c0c84f3af372f7be
+    home: https://github.com/topolvm/topolvm
+    name: topolvm
+    sources:
+    - https://github.com/topolvm/helm/tree/master/charts/topolvm
+    - https://github.com/topolvm/topolvm
+    urls:
+    - https://github.com/topolvm/helm/releases/download/topolvm-1.1.1/topolvm-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v1
+    appVersion: 0.6.0
     created: "2020-10-14T19:38:25.545762685Z"
     description: Topolvm
     digest: 2103410f527a32597e27780e8217549b7671c635a82076779f5cb09c1e7d2b39
