@@ -4,9 +4,10 @@
 ## Pre Requisites
 * Kubernetes 1.16+
 * `lvmd` installed on the underlying nodes, ref: https://github.com/topolvm/topolvm/blob/master/docs/lvmd.md
-* `cert-manager` installed. ref: https://cert-manager.io/
+* Configure `kube-scheduler` on the underlying nodes, ref: https://github.com/topolvm/topolvm/tree/master/deploy#configure-kube-scheduler
+* `cert-manager` version `v1.0.0+` installed. ref: https://cert-manager.io/
 * Requires at least `v3.2.3` version of helm to support
-* Namespace named `topolvm-system`:
+* Namespace named `topolvm-system` with the relevant labels:
 
     ```
     kubectl apply -f charts/topolvm/namespace.yaml

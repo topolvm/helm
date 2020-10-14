@@ -1,5 +1,5 @@
 # Generate a CA Certificate used to sign certificates for the webhook
-apiVersion: cert-manager.io/v1alpha3
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ template "topolvm.fullname" . }}-webhook-ca
@@ -20,7 +20,7 @@ spec:
 ---
 
 # Finally, generate a serving certificate for the webhook to use
-apiVersion: cert-manager.io/v1alpha3
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ template "topolvm.fullname" . }}-mutatingwebhook
@@ -28,7 +28,7 @@ metadata:
   {{- include "topolvm.labels" . | nindent 4 }}
 spec:
   secretName: {{ template "topolvm.fullname" . }}-mutatingwebhook
-  duration: 8760h0m0s # 1y
+  duration: 87600h0m0s # 10y
   issuerRef:
     name: {{ template "topolvm.fullname" . }}-webhook-ca
   dnsNames:
