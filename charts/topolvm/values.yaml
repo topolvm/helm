@@ -106,7 +106,7 @@ kubeScheduler:
 
 # lvmd service
 lvmd:
-  managed: false
+  managed: true
   deviceClasses: []
 #   - name: ssd
 #     volume-group: myvg1
