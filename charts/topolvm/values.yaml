@@ -1,6 +1,6 @@
 image:
   repository: quay.io/topolvm/topolvm
-  tag: 0.6.0
+  tag: 0.7.0
   pullPolicy: IfNotPresent
 
 
@@ -44,7 +44,8 @@ scheduler:
       operator: Exists
     - effect: NoSchedule
       key: node-role.kubernetes.io/master
-
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
 
   ## Node labels for default backend pod assignment
   ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
@@ -80,29 +81,21 @@ scheduler:
 kubeScheduler:
   managed: false
   config:
-    apiVersion: kubescheduler.config.k8s.io/v1alpha1
+    apiVersion: kubescheduler.config.k8s.io/v1beta1
     kind: KubeSchedulerConfiguration
-    schedulerName: default-scheduler
-    algorithmSource:
-      policy:
-        file:
-          path: /etc/topolvm/scheduler/scheduler-policy.cfg
     leaderElection:
       leaderElect: true
     clientConnection:
       kubeconfig: /etc/kubernetes/scheduler.conf
-  policy:
-    kind: Policy
-    apiVersion: v1
     extenders:
-    - urlPrefix: http://127.0.0.1:9251
-      filterVerb: predicate
-      prioritizeVerb: prioritize
-      nodeCacheCapable: false
-      weight: 1
-      managedResources:
-      - name: topolvm.cybozu.com/capacity
-        ignoredByScheduler: true
+      - urlPrefix: "http://127.0.0.1:9251"
+        filterVerb: "predicate"
+        prioritizeVerb: "prioritize"
+        nodeCacheCapable: false
+        weight: 1
+        managedResources:
+          - name: "topolvm.cybozu.com/capacity"
+            ignoredByScheduler: true
   resources: {}
 #    requests:
 #      memory: 50Mi
@@ -119,9 +112,6 @@ lvmd:
 #     volume-group: myvg1
 #     default: true
 #     spare-gb: 10
-  image:
-    repository:
-    tag:
   resources: {}
 #    requests:
 #      memory: 100Mi

@@ -8,9 +8,11 @@ metadata:
 spec:
   privileged: true
   allowPrivilegeEscalation: true
+  hostPID: true
   volumes:
     - 'configMap'
     - 'hostPath'
+    - 'secret'
   allowedHostPaths:
     - pathPrefix: "/run/topolvm"
       readOnly: false

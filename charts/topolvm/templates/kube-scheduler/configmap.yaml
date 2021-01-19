@@ -8,6 +8,4 @@ metadata:
 data:
   scheduler-config.yaml: |
 {{ toYaml .Values.kubeScheduler.config | indent 4 }}
-  scheduler-policy.json: |
-{{ toJson .Values.kubeScheduler.policy | indent 4 }}
 {{- end }}

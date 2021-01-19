@@ -28,9 +28,7 @@ spec:
             - -ec
             - |
               cat /config/scheduler-config.yaml > /etc/topolvm/scheduler/.scheduler-config.yaml
-              cat /config/scheduler-policy.json > /etc/topolvm/scheduler/.scheduler-policy.json
               mv /etc/topolvm/scheduler/.scheduler-config.yaml /etc/topolvm/scheduler/scheduler-config.yaml
-              mv /etc/topolvm/scheduler/.scheduler-policy.json /etc/topolvm/scheduler/scheduler-policy.json
           volumeMounts:
             - mountPath: /config
               name: config

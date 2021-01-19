@@ -61,9 +61,8 @@ spec:
             - /csi-provisioner
             - "--csi-address=/run/topolvm/csi-topolvm.sock"
             - "--feature-gates=Topology=true"
-            - --enable-leader-election
+            - --leader-election
             - --leader-election-namespace={{ .Release.Namespace }}
-            - --leader-election-type=leases
           volumeMounts:
             - name: socket-dir
               mountPath: /run/topolvm

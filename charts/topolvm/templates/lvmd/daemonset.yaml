@@ -30,7 +30,7 @@ spec:
       hostPID: true
       containers:
         - name: lvmd
-          image: "{{ .Values.lvmd.image.repository | default .Values.image.repository }}:{{ .Values.lvmd.image.tag | default .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           securityContext:
             privileged: true
           command:
