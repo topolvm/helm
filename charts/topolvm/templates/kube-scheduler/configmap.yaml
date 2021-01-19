@@ -1,0 +1,13 @@
+{{- if .Values.kubeScheduler.managed }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "topolvm.fullname" . }}-kubescheduler
+  labels:
+  {{- include "topolvm.labels" . | nindent 4 }}
+data:
+  scheduler-config.yaml: |
+{{ toYaml .Values.kubeScheduler.config | indent 4 }}
+  scheduler-policy.json: |
+{{ toJson .Values.kubeScheduler.policy | indent 4 }}
+{{- end }}

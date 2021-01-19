@@ -1,0 +1,27 @@
+{{- if and .Values.podSecurityPolicy.create .Values.kubeScheduler.managed }}
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: {{ template "topolvm.fullname" . }}-kubescheduler
+  labels:
+  {{- include "topolvm.labels" . | nindent 4 }}
+spec:
+  privileged: true
+  allowPrivilegeEscalation: true
+  volumes:
+    - 'configMap'
+    - 'hostPath'
+  allowedHostPaths:
+    - pathPrefix: "/etc/topolvm/scheduler"
+      readOnly: false
+  hostNetwork: true
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+  readOnlyRootFilesystem: true
+{{- end }}

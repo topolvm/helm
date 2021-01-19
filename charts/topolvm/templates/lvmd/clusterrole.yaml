@@ -1,0 +1,13 @@
+{{- if .Values.lvmd.managed }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ .Release.Namespace }}:lvmd
+  labels:
+  {{- include "topolvm.labels" . | nindent 4 }}
+rules:
+  - apiGroups: ["policy"]
+    resources: ["podsecuritypolicies"]
+    verbs: ["use"]
+    resourceNames: ["{{ template "topolvm.fullname" . }}-lvmd"]
+{{- end }}

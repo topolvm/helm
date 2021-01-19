@@ -1,0 +1,21 @@
+{{- if .Values.lvmd.managed }}
+{{ $global := . }}
+{{- $lvmds := concat ( list .Values.lvmd ) .Values.lvmd.additionalConfigs }}
+{{- range $lvmdidx, $lvmd := $lvmds }}
+{{- with $global }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "topolvm.fullname" . }}-lvmd{{ $lvmdidx }}
+  labels:
+    idx: {{ $lvmdidx | quote}}
+  {{- include "topolvm.labels" . | nindent 4 }}
+data:
+  lvmd.yaml: |
+    socket-name: /run/topolvm/lvmd.sock
+    device-classes:
+{{ toYaml $lvmd.deviceClasses | indent 6 }}
+{{- end }}
+{{- end }}
+{{- end }}
