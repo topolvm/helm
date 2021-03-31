@@ -1,4 +1,4 @@
-apiVersion: admissionregistration.k8s.io/v1beta1
+apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
   name: {{ template "topolvm.fullname" . }}-hook
@@ -9,6 +9,9 @@ metadata:
     app.kubernetes.io/name: {{ template "topolvm.fullname" . }}-hook
 webhooks:
   - name: pod-hook.topolvm.cybozu.com
+    admissionReviewVersions:
+      - "v1"
+      - "v1beta1"
     namespaceSelector:
       matchExpressions:
       - key: topolvm.cybozu.com/webhook
@@ -27,6 +30,9 @@ webhooks:
         resources: ["pods"]
     sideEffects: None
   - name: pvc-hook.topolvm.cybozu.com
+    admissionReviewVersions:
+      - "v1"
+      - "v1beta1"
     namespaceSelector:
       matchExpressions:
       - key: topolvm.cybozu.com/webhook
