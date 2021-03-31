@@ -23,8 +23,8 @@ The chart can be customized using the following configurable parameters:
 
 | Parameter                       | Description                                                                                         | Default                      |
 | ------------------------------- | ----------------------------------------------------------------------------------------------------| -----------------------------|
-| `image.repository`              | TopoLVM Container image name                                                                        | `quay.io/topolvm/topolvm`    |
-| `image.tag`                     | TopoLVM Container image tag                                                                         | `0.7.0`                      |
+| `image.repository`              | TopoLVM Container image name                                                                        | `quay.io/topolvm/topolvm-with-sidecar`    |
+| `image.tag`                     | TopoLVM Container image tag                                                                         | `0.8.1`                      |
 | `image.pullPolicy`              | TopoLVM Container pull policy                                                                       | `IfNotPresent`               |
 | `controller.replicaCount`       | Number of TopoLVM controllers pods to deploy                                                        | `2`                          |
 | `podSecurityPolicy.create`      | Specify if a pod security policy must be created                                                    | `true`                       |
