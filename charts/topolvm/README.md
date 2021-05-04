@@ -1,8 +1,8 @@
 # TopoLVM Helm Chart
 ----------------------------------------
 
-## Pre Requisites
-* Kubernetes 1.17+
+## Prerequisites
+* Kubernetes 1.18+
 * Configure `kube-scheduler` on the underlying nodes, ref: https://github.com/topolvm/topolvm/tree/master/deploy#configure-kube-scheduler
 * `cert-manager` version `v1.0.0+` installed. ref: https://cert-manager.io/
 * Requires at least `v3.2.3` version of helm to support
@@ -23,8 +23,8 @@ The chart can be customized using the following configurable parameters:
 
 | Parameter                       | Description                                                                                         | Default                      |
 | ------------------------------- | ----------------------------------------------------------------------------------------------------| -----------------------------|
-| `image.repository`              | TopoLVM Container image name                                                                        | `quay.io/topolvm/topolvm`    |
-| `image.tag`                     | TopoLVM Container image tag                                                                         | `0.7.0`                      |
+| `image.repository`              | TopoLVM Container image name                                                                        | `quay.io/topolvm/topolvm-with-sidecar`    |
+| `image.tag`                     | TopoLVM Container image tag                                                                         | `0.8.1`                      |
 | `image.pullPolicy`              | TopoLVM Container pull policy                                                                       | `IfNotPresent`               |
 | `controller.replicaCount`       | Number of TopoLVM controllers pods to deploy                                                        | `2`                          |
 | `podSecurityPolicy.create`      | Specify if a pod security policy must be created                                                    | `true`                       |

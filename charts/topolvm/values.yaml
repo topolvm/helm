@@ -1,6 +1,6 @@
 image:
-  repository: quay.io/topolvm/topolvm
-  tag: 0.7.0
+  repository: quay.io/topolvm/topolvm-with-sidecar
+  tag: 0.8.1
   pullPolicy: IfNotPresent
 
 
