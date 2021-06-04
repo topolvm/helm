@@ -152,6 +152,31 @@ node:
     enabled: true
     annotations:
       prometheus.io/port: "8080"
+    serviceMonitor:
+      # If true, will create a ServiceMonitor instance for Prometheus scraping
+      enabled: false
+      # The name of the label on the target service to use as the job name in prometheus
+      jobLabel: jobLabel
+
+      ## Interval at which metrics should be scraped.
+      ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
+      ##
+      # interval: 10s
+
+      ## Timeout after which the scrape is ended
+      ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
+      ##
+      # scrapeTimeout: 10s
+
+      ## RelabelConfigs to apply to samples before scraping
+      ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#relabelconfig
+      ##
+      # relabelings: []
+
+      # MetricRelabelConfigs to apply to samples before ingestion
+      # ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#relabelconfig
+      #
+      # metricRelabelings: []
 
   ## Define resources requests and limits for single Pods.
   ## ref: https://kubernetes.io/docs/user-guide/compute-resources/

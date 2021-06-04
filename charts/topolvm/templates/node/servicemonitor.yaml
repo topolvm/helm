@@ -1,0 +1,34 @@
+{{- if .Values.node.metrics.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "topolvm.fullname" . }}-node
+  labels:
+    {{- include "topolvm.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.node.metrics.serviceMonitor.jobLabel}}
+  jobLabel: {{ .Values.node.metrics.serviceMonitor.jobLabel }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "topolvm.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: {{ include "topolvm.fullname" . }}-node
+  endpoints:
+    - port: metrics
+      {{- if .Values.node.metrics.serviceMonitor.interval }}
+      interval: {{ .Values.node.metrics.serviceMonitor.interval }}
+      {{- end }}
+      {{- if .Values.node.metrics.serviceMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ .Values.node.metrics.serviceMonitor.scrapeTimeout }}
+      {{- end }}
+      {{- if .Values.node.metrics.serviceMonitor.relabelings }}
+      relabelings: {{- include "topolvm.tplValue" ( dict "value" .Values.node.metrics.serviceMonitor.relabelings "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.node.metrics.serviceMonitor.metricRelabelings }}
+      metricRelabelings: {{- include "topolvm.tplValue" ( dict "value" .Values.node.metrics.serviceMonitor.metricRelabelings "context" $) | nindent 8 }}
+      {{- end }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+{{- end }}

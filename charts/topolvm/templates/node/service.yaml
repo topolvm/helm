@@ -1,0 +1,18 @@
+{{- if .Values.node.metrics.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "topolvm.fullname" . }}-node
+  labels:
+    {{- include "topolvm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ template "topolvm.fullname" . }}-node
+spec:
+  type: ClusterIP
+  ports:
+    - name: metrics
+      port: 8080
+      targetPort: metrics
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ include "topolvm.fullname" . }}-node
+{{- end }}
