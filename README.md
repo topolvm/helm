@@ -1,3 +1,11 @@
+# DEPRECATED
+
+**This chart has been deprecated and moved to its new home:**
+
+- **GitHub repo:** https://github.com/topolvm/topolvm/tree/main/charts/topolvm
+- **Charts repo:** https://topolvm.github.io/topolvm
+
+
 # TopoLVM Helm Charts for Kubernetes
 
 Provided by [TopoLVM](https://github.com/topolvm/topolvm), ready to launch on Kubernetes using [Kubernetes Helm](https://github.com/helm/helm).
